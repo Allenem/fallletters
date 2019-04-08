@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="Generator" content= "EditPlus">
+	<meta name="Author" content="">
+	<meta name="Keywords" content="">
+	<meta name="Description" content="">
+	<title>index</title>
+	<style>
+	*{margin:0;padding:0;}
+	</style>
+</head>
+<body>
+<!-- <canvas id="canvas" width=500 height=500> </canvas> -->
+<script>
+
+var myCanvas = "<canvas id='canvas' width='" + screen.availWidth + "px' height='"+ screen.availHeight + "px'></vanvas>";
+document.body.insertAdjacentHTML("beforeEnd", myCanvas);
+var oCanvas = document.getElementById("canvas");
+// 获取一canvas里面的所有api(方法)
+var oCtx = oCanvas.getContext("2d");
+//1获取可视区域的宽高赋值给画布
+var oWidth = window.innerWidth,oHeight = window.innerHeight;
+//2准备下落的26个字母
+var oText = "QWERTYUIOPASDFGHJKLZXCVBNM";
+//3设置文字的大小
+var fontSize = 24;
+//4要知道行有多少个字母=可视区域的宽/文字大小
+var num = Math.floor(oWidth/fontSize) ;
+//我们用一个数组去存放字母的y坐标
+var drops=[];
+
+for(var i=0; i<num; i++){
+	drops.push(0) // [0,0,0,0,]->[1,1,1,1]->[1000,1000,1000,1000]
+}
+
+function draw(){ // 造字母
+	oCtx.fillStyle = "rgba(0,0,0,0.1)" ; //渲染黑色的背景
+	oCtx.fillRect(0,0,oWidth,oHeight);
+	oCtx.fillStyle = "green" ;
+	oCtx.font = fontSize +"px" ;
+	//要字母的坐标, x坐标y坐标
+	for(var i=0; i<num; i++){
+		var oX = i*fontSize, // 获取字母的X坐标
+			oY = drops[i]*fontSize; //获取字母的Y坐标
+		var random = Math.floor(Math.random()*oText.length); // 0-25随机数
+		oCtx.fillText(oText[random],oX,oY) //渲染字母到画布上:
+		if(oY>oHeight && Math.random()> 0.95){
+			drops[i]= 0;
+		}
+		drops[i]++;
+		}
+}
+setInterval(draw, 50) //每隔50毫秒去执行一遍draw这个函数
+
+</script>
+</body>
+</html>
